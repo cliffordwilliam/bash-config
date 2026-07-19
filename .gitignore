@@ -1,0 +1,8 @@
+# Machine-local settings and secrets, sourced by .bashrc but never tracked
+.bashrc.local
+*.local
+
+# Backups
+*.backup-*
+*.bak
+*.swp
