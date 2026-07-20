@@ -144,6 +144,16 @@ if command -v fdfind >/dev/null 2>&1 && ! command -v fd >/dev/null 2>&1; then
   ln -sf "$(command -v fdfind)" "$HOME/.local/bin/fd"
 fi
 
+# Claude Code truecolor inside tmux.
+# Node's tty.getColorDepth() sees $TMUX in the environment and caps at 256-color
+# BEFORE it reads COLORTERM=truecolor, so Claude Code quantizes its orange accent
+# (#d97757) to the nearest 256 cube colour (~#d7875f), which reads as pinkish.
+# Truecolor itself passes through tmux fine -- the problem is only the detection.
+# Unsetting $TMUX just for this process lets detection read COLORTERM=truecolor
+# and emit real 24-bit colour. Preferred over FORCE_COLOR=3 because it keeps
+# output colour-free when piped (e.g. `claude -p ... > file`).
+alias claude='TMUX= claude'
+
 # Machine-local settings and secrets -- NOT tracked in git.
 # Put any tokens/API keys/per-machine tweaks in ~/.bashrc.local so this file
 # (which lives in a public repo) stays free of anything sensitive.
